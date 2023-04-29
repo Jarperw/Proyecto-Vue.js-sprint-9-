@@ -1,13 +1,13 @@
 <template>
-  home
+  personaje 
 </template>
 
 <script>
 export default {
-  name: 'Home'
+    name:'personaje'
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
 
 </style>

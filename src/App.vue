@@ -1,24 +1,19 @@
 <template>
-  <nav>
-    <Navegacion/>
-  </nav>
-  <header>
-  </header>
-
+  <Navegacion />
+  <header></header>
   <RouterView />
 </template>
 
 <script>
-import Navegacion from './components/Navegacion.vue'
+import Navegacion from "./components/Navegacion.vue";
 
 export default {
   components: { Navegacion },
-  name: 'App'
-}
+  name: "App",
+};
 </script>
 
 <style lang="scss" scoped>
-
 </style>
 
 
