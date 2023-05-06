@@ -9,6 +9,9 @@
         <div class="navbar-nav">
           <RouterLink class="nav-link" to="/">Home</RouterLink>
           <RouterLink class="nav-link" to="/personajes">Personajes</RouterLink>
+          <RouterLink class="nav-link" to="/login">login</RouterLink>
+          <RouterLink class="nav-link" to="/register">register</RouterLink>
+          <RouterLink class="nav-link" to="/perfil">perfil</RouterLink>
         </div>
       </div>
     </div>

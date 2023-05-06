@@ -1,6 +1,8 @@
 <template>
   <div v-if="!mostrarPersonaje">
-    <input class="mb-2 p-2 rounded-5" type="text" v-model="buscar" placeholder="Buscar por nombre"/>
+    <input class="mb-2 p-2 rounded-5" type="text" v-model="buscar" placeholder="Buscar por nombre"/>{{infoBuscar}}
+    <button v-show="!buscar" :class="['btn', {'btn-danger': marcado},'float-end']" @click="setOrden(true)">Z-A</button>
+    <button v-show="!buscar" :class="['btn', {'btn-danger': !marcado},'float-end']" @click="setOrden(false)">A-Z</button>
     <div class="d-flex flex-wrap gap-2">
       <!-- card con imgane y nombre -->
       <div
@@ -36,11 +38,11 @@ export default {
   },
   computed: {
     ...mapState(["personajes", "offset", "buscados", "mostrarPersonaje"]),
-    ...mapGetters(["totalPersonajes"]),
+    ...mapGetters(["totalPersonajes" ,"marcado", "infoBuscar"]),
   },
   methods: {
     ...mapActions(["add"]),
-    ...mapMutations(["addOffset", "addBuscar", "addBuscados", "resetBuscados", "setMostrarPersonaje", "addPersonajeActual"])
+    ...mapMutations(["addOffset", "addBuscar", "resetBuscados", "setMostrarPersonaje", "addPersonajeActual", "setOrden", "resetPersonajes"])
     ,
     //mostrar el personaje y cargar el nombre en la url
     verPersonaje(personaje) {
@@ -54,9 +56,7 @@ export default {
       const options = { root: document, rootMargion: "0px", threshold: 0 };
       const callback = (entries) => {
         if (entries[0].isIntersecting && this.offset < this.totalPersonajes && !this.buscar) {
-          //modificar numero por info api
-          console.log("scroll");
-          this.add("url1");
+          this.add("ver");
           this.addOffset();
           console.log("offset", this.offset);
         }
@@ -68,25 +68,28 @@ export default {
   created() {
     //llamada Api scroll infinito
     this.observarScroll();
-    this.setMostrarPersonaje(false)
+  },
+  //borrar componente cuando sales
+  beforeUnmount() {
+    this.resetPersonajes();
   },
   watch: {
     //reactivar Api scroll infinito hijo->padre temporizador para dar tiempo a mostrar el dom
     mostrarPersonaje(valor) {
       setTimeout(() => {
         if (!valor) this.observarScroll();
-      }, 10);
+      }, 50);
     },
     //buscar por nombre
     buscar(valor) {
       if (!valor) return this.resetBuscados();
-
-      //despues de 1000seg del ultima cambio de buscar, para evitar multiples llamadas
+      
+      //despues de 700mseg del ultima cambio de buscar, para evitar multiples llamadas
       clearTimeout(this.timerId);
       this.timerId = setTimeout(() => {
         this.addBuscar(valor);
-        this.add("url2");
-      }, 1000);
+        this.add("buscar");
+      }, 700);
     },
   },
 };
