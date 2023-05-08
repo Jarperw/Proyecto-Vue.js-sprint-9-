@@ -29,13 +29,12 @@ export default {
             nombre: '',
             nickname: '',
         },
-        editar: false,
-        logeado: '',
         forgot: {
             email: '',
             error: '',
-        }
-
+        },
+        errorFirebase: '',
+        editar: false,
     },
     mutations: {
         addUsuario(state, resp) {
@@ -44,15 +43,9 @@ export default {
         //validaciones formularios
         addValidacion(state, resp) {
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            const arrayResp = Object.keys(resp); //pasar el objeto a un array
+            const arrayResp = Object.keys(resp); //pasa el objeto resp a array
             state.validacion = true;
 
-            if (arrayResp.includes('condiciones')) {
-                if (resp.condiciones == false) {
-                    state.error.condiciones = 'is-invalid';
-                    state.validacion = false;
-                }
-            }
             if (arrayResp.includes('password')) {
                 if (resp.password.length < 6) {
                     state.error.password = 'is-invalid';
@@ -64,8 +57,14 @@ export default {
                 state.validacion = false;
             }
 
-            if (arrayResp.length <= 3) return;
+            if (arrayResp.length < 3) return;//si el objeto es de login para aqui
 
+            if (arrayResp.includes('condiciones')) {
+                if (resp.condiciones == false) {
+                    state.error.condiciones = 'is-invalid';
+                    state.validacion = false;
+                }
+            }
             if (resp.apellido == '') {
                 state.error.apellido = 'is-invalid';
                 state.validacion = false;
@@ -89,6 +88,24 @@ export default {
                 }
             }
         },
+        addErrorFirebase(state, resp) {
+            if (resp.code == 'auth/wrong-password') {
+                state.errorFirebase = resp;
+                state.error.password = 'is-invalid';
+            } else {
+                state.errorFirebase = resp;
+                state.error.email = 'is-invalid';
+            }
+        },
+        addErrorFirebaseModificar(state, resp) {
+            if (resp.code == 'auth/wrong-password') {
+                state.errorFirebase = resp;
+                state.error.passwordActual = 'is-invalid';
+            } else {
+                state.errorFirebase = resp;
+                state.error.email = 'is-invalid';
+            }
+        },
         addForgotError(state, resp) {
             state.forgot.error = resp;
         },
@@ -101,10 +118,14 @@ export default {
         resetError(state, resp) {
             if (resp) {
                 state.error[resp] = '';
+                if (resp == 'email' || resp == 'password' || resp == 'passwordActual') {
+                    state.errorFirebase = '';
+                }
             } else {
                 for (let key in state.error) {
                     state.error[key] = '';
                 }
+                state.errorFirebase = '';
             }
         },
         resetForgot(state) {
@@ -113,7 +134,7 @@ export default {
         },
     },
     actions: {
-        //si existe cargar usuario actual en perfil
+        //cargar usuario actual
         async cargarUsuario({ commit }) {
             if (auth.currentUser) {
                 const data = await getDoc(doc(db, 'usuarios', auth.currentUser.uid));//data: info del usuario en firestore 
@@ -126,7 +147,7 @@ export default {
             router.push("/");
             console.log('sesion cerrada');
         },
-        //cambio datos usuario
+        //modificar datos usuario
         async addCambios({ commit, dispatch }, resp) {
             try {
                 const user = auth.currentUser;
@@ -151,10 +172,11 @@ export default {
                 dispatch('cargarUsuario');
             } catch (error) {
                 console.error(error)
+                commit('addErrorFirebaseModificar', error);
             }
         },
         //registro usuario en firebase
-        async registro({ }, resp) {
+        async registroFire({ commit, dispatch }, resp) {
             try {
                 const { user } = await createUserWithEmailAndPassword( //crea usuario en firebase auth
                     auth,
@@ -172,22 +194,25 @@ export default {
                     tipo: resp.tipo
                 });
                 console.log('registrado');
+                dispatch('cargarUsuario');
                 router.push('/');
             } catch (error) {
-                console.error(error);
+                commit('addErrorFirebase', error);
             }
         },
         //login usuario en firebase
-        async loginFire({ }, resp) {
+        async loginFire({ commit, dispatch }, resp) {
             try {
                 await signInWithEmailAndPassword(auth, resp.email, resp.password);//autentificar usuario con contraseña
 
                 console.log("logeado");
-                router.push("/perfil");
+                dispatch('cargarUsuario');
             } catch (error) {
-                console.error(error);
+                commit('addErrorFirebase', error);
+                console.log(error)
             }
         },
+        //restablecer contraseña
         async forgotPassword({ commit }, email) {
             try {
                 await sendPasswordResetEmail(auth, email);//si existe el email envia email restablecer
@@ -200,11 +225,27 @@ export default {
     getters: {
         smsForgot(state) {
             if (state.forgot.error.code == 'auth/too-many-requests') {
-                return 'Has excedido el limite de solicitudes, pruebalo mas tarde.';
+                return 'Se ha excedido el limite de solicitudes.';
             } else if (state.forgot.error.code == 'auth/user-not-found') {
-                return 'El email no esta registrado.';
+                return 'Usuario no encontrado.';
             } else {
-                return 'Introduce un email valido.';
+                return 'Por favor, introduce un email valido.';
+            }
+        },
+        smsMail(state) {
+            if (state.errorFirebase.code == 'auth/user-not-found') {
+                return 'Usuario no encontrado.';
+            }
+            if (state.errorFirebase.code == 'auth/email-already-in-use') {
+                return 'El email ya esta registrado.';
+            }
+            if (state.errorFirebase.code == 'auth/too-many-requests') {
+                return 'Se ha excedido el limite de solicitudes.';
+            }
+        },
+        smsPassword(state) {
+            if (state.errorFirebase.code == 'auth/wrong-password') {
+                return 'Contraseña incorrecta.';
             }
         }
     }

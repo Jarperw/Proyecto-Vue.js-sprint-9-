@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { auth } from '../firebase/firebase'
+import { auth, db } from '../firebase/firebase'
+import { doc, getDoc } from "firebase/firestore"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,17 @@ const router = createRouter({
       meta:{
         title: 'Personajes | Marvel Comics',
         registrado: true,
+        // premium: true,
+      }
+    },
+    {
+      path: '/personaje',
+      name: 'personaje',
+      component: () => import('../views/PersonajeView.vue'),
+      meta:{
+        title: 'Personaje | Marvel Comics',
+        registrado: true,
+        premium: true,
       }
     },
     {
@@ -49,22 +61,39 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  //proteccion rutas registro
+//proteccion rutas registro
+router.beforeEach(async(to, from, next) => { 
+  //itera las rutas y devuelve true si la ruta tiene meta.registrado
   if(to.matched.some(record => record.meta.registrado)){
-    //para volver a la ruta protegida usar 'to' que da la ruta que pulsas
     if(auth.currentUser){
-      console.log('registrado')
-      next();
+      //itera las rutas y devuelve true si la ruta tiene meta.premium 
+      if(to.matched.some(record => record.meta.premium)){
+        const data = await getDoc(doc(db, 'usuarios', auth.currentUser.uid));//datos firestore
+        const tipo = data.data().tipo;//tipo Premium/Normal 
+        if(tipo == 'Premium'){
+          console.log('premium')
+          next()
+        }else{
+          console.log('no premium')
+          next('/')
+        }
+      }else{
+        console.log('registrado')
+        next()
+      }
+      // next();
     } else {
       console.log('no registrado')
       next('/login');
     }
+
   }else {
     next();
   }
   // poner titulo a cada componente
   document.title = to.meta.title
 });
+
+
 
 export default router

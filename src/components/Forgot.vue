@@ -1,10 +1,10 @@
 <template>
-  <a @click="resetForgot()" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">forgot pasword</a>
+  <a @click="resetForgot()" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">¿Olvidaste tu contraseña?</a>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Forgot password</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">¿Olvidaste tu contraseña?</h1>
           <button ref="close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
