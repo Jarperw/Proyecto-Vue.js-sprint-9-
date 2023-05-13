@@ -35,6 +35,7 @@ export default {
         },
         errorFirebase: '',
         editar: false,
+        redireccionar: null,
     },
     mutations: {
         addUsuario(state, resp) {
@@ -115,6 +116,9 @@ export default {
         setEditar(state, resp) {
             state.editar = resp;
         },
+        setRedireccionar(state, resp) {
+            state.redireccionar = resp
+        },
         resetError(state, resp) {
             if (resp) {
                 state.error[resp] = '';
@@ -135,15 +139,21 @@ export default {
     },
     actions: {
         //cargar usuario actual
-        async cargarUsuario({ commit }) {
+        async cargarUsuario({ state, commit }) {
             if (auth.currentUser) {
                 const data = await getDoc(doc(db, 'usuarios', auth.currentUser.uid));//data: info del usuario en firestore 
-                commit('addUsuario', data.data())
+                const dataContent = data.data();
+                commit('addUsuario', dataContent);
+
+                if (typeof data.data() !== 'undefined') {
+                    router.push(state.redireccionar || '/');
+                }
             }
         },
         //cerrar sesion
-        async cerrarSesion() {
+        async cerrarSesion({ commit }) {
             await signOut(auth);
+            commit('addUsuario', '');
             router.push("/");
             console.log('sesion cerrada');
         },
@@ -171,7 +181,6 @@ export default {
                 commit('setEditar', false);
                 dispatch('cargarUsuario');
             } catch (error) {
-                console.error(error)
                 commit('addErrorFirebaseModificar', error);
             }
         },
@@ -195,21 +204,19 @@ export default {
                 });
                 console.log('registrado');
                 dispatch('cargarUsuario');
-                router.push('/');
             } catch (error) {
                 commit('addErrorFirebase', error);
             }
         },
         //login usuario en firebase
-        async loginFire({ commit, dispatch }, resp) {
+        async loginFire({ state, commit, dispatch }, resp) {
             try {
                 await signInWithEmailAndPassword(auth, resp.email, resp.password);//autentificar usuario con contraseña
 
-                console.log("logeado");
                 dispatch('cargarUsuario');
+                console.log("logeado");
             } catch (error) {
                 commit('addErrorFirebase', error);
-                console.log(error)
             }
         },
         //restablecer contraseña
@@ -223,7 +230,7 @@ export default {
         },
     },
     getters: {
-        smsForgot(state) {
+        msgForgot(state) {
             if (state.forgot.error.code == 'auth/too-many-requests') {
                 return 'Se ha excedido el limite de solicitudes.';
             } else if (state.forgot.error.code == 'auth/user-not-found') {
@@ -232,7 +239,7 @@ export default {
                 return 'Por favor, introduce un email valido.';
             }
         },
-        smsMail(state) {
+        msgMail(state) {
             if (state.errorFirebase.code == 'auth/user-not-found') {
                 return 'Usuario no encontrado.';
             }
@@ -243,10 +250,13 @@ export default {
                 return 'Se ha excedido el limite de solicitudes.';
             }
         },
-        smsPassword(state) {
+        msgPassword(state) {
             if (state.errorFirebase.code == 'auth/wrong-password') {
                 return 'Contraseña incorrecta.';
             }
+        },
+        nombreUsuario(state) {
+            return (state.usuarioActual) ? state.usuarioActual.nickname : '';
         }
     }
 }

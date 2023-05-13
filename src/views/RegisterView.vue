@@ -1,8 +1,11 @@
 <template>
-   <form class="row g-3 m-3" @submit.prevent="registrar()" novalidate>
+<div class="container-fluid position-relative py-1 px-0">
+  <img class="cover position-absolute z-n1" src="/img/18.jpg" alt="">
+   <form class="row mx-3 mx-xl-auto my-5 p-3 g-3 border border-3 bg-white border-black rounded-3" @submit.prevent="registrar()" novalidate>
+    <h1>Registro</h1>
     <div class="col-md-6">
       <label for="nickname" class="form-label">Usuario</label>
-      <input v-model.trim="usuario.nickname" @input="resetError('nickname')" type="text" :class="['form-control', error.nickname]" ref="nickname" id="nickname">
+      <input v-model.trim="usuario.nickname" @input="resetError('nickname')" type="text" :class="['form-control', error.nickname]" ref="nickname" id="nickname" placeholder="Usuario">
       <div class="invalid-feedback">Por favor, introduce tu Usuario, minimo 3 carcateres.</div>
     </div>
     <div class="col-md-6">
@@ -14,23 +17,23 @@
     </div>
     <div class="col-md-6">
       <label for="nombre" class="form-label">Nombre</label>
-      <input v-model.trim="usuario.nombre" @input="resetError('nombre')" type="text" :class="['form-control', error.nombre]" ref="nombre" id="nombre">
+      <input v-model.trim="usuario.nombre" @input="resetError('nombre')" type="text" :class="['form-control', error.nombre]" ref="nombre" id="nombre" placeholder="Nombre">
       <div class="invalid-feedback">Por favor, introduce tu nombre.</div>
     </div>
     <div class="col-md-6">
       <label for="apellido" class="form-label">Apellido</label>
-      <input v-model.trim="usuario.apellido" @input="resetError('apellido')" type="text" :class="['form-control', error.apellido]" ref="apellido" id="apellido">
+      <input v-model.trim="usuario.apellido" @input="resetError('apellido')" type="text" :class="['form-control', error.apellido]" ref="apellido" id="apellido" placeholder="apellido">
       <div class="invalid-feedback">Por favor, introduce tu apellido.</div>
     </div>
     <div class="col-md-6">
       <label for="email" class="form-label">Email</label>
-      <input v-model.trim="usuario.email" @input="resetError('email')" type="email" :class="['form-control', error.email]" ref="email" id="email">
-      <div v-if="!smsMail" class="invalid-feedback">Por favor, introduce un email valido.</div>
-      <div v-else class="invalid-feedback">{{ smsMail }}</div>
+      <input v-model.trim="usuario.email" @input="resetError('email')" type="email" :class="['form-control', error.email]" ref="email" id="email" placeholder="email">
+      <div v-if="!msgMail" class="invalid-feedback">Por favor, introduce un email valido.</div>
+      <div v-else class="invalid-feedback">{{ msgMail }}</div>
     </div>
     <div class="col-md-6">
-      <label for="password" class="form-label">Password</label>
-      <input v-model.trim="usuario.password" @input="resetError('password')" :type="verPassword ? 'text': 'password'" :class="['form-control', error.password]" ref="password" id="password">
+      <label for="password" class="form-label">Contraseña</label>
+      <input v-model.trim="usuario.password" @input="resetError('password')" :type="verPassword ? 'text': 'password'" :class="['form-control', error.password]" ref="password" id="password" placeholder="Contraseña">
       <div class="invalid-feedback">Por favor, introduce un pasword valido, minimo 6 caracteres.</div>
     </div>
     <Ver-password :valor="verPassword" @valor="verPassword = $event"/>
@@ -40,10 +43,11 @@
         <label class="form-check-label" for="terms">Acepto los términos y condiciones.</label>
       </div>
     </div>
-    <div class="col-12">
-      <button class="btn btn-primary">Guardar cambios</button>    
+    <div class="col-12 mb-2">
+      <button class="btn btn-danger">Guardar cambios</button>    
     </div>
   </form>
+</div>
 </template>
 
 <script>
@@ -69,7 +73,7 @@ export default {
   },
   computed: {
     ...mapState("usuarios", ["validacion", "error"]),
-    ...mapGetters("usuarios", ["smsMail"]),
+    ...mapGetters("usuarios", ["msgMail"]),
   },
   methods: {
     ...mapMutations("usuarios", ["addValidacion", "resetError"]),
@@ -80,7 +84,7 @@ export default {
         this.registroFire(this.usuario);
     },
     validar() {
-        this.resetError();
+        // this.resetError();
         //enviar validacion a vuex
         this.addValidacion(this.usuario);
 
@@ -93,6 +97,9 @@ export default {
         return this.validacion;
     },
   },
+  mounted() {
+    this.$refs.nickname.focus()
+  },
   beforeUnmount() {
     this.resetError();
   }
@@ -100,4 +107,56 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container-fluid{
+  max-width: 1600px;
+  .cover {
+  top: 0;
+  width: 100%;
+  height: 1054px;
+  object-fit: cover;
+  object-position: center;
+  @media (min-width: 403px) {
+    height: 1018px;
+  }
+  @media (min-width: 768px) {
+    height: 705px;
+  }
+}
+.row {
+  max-width: 70em;
+  .form-select {
+    box-shadow: none;
+    border: 0.2em solid #000;
+  }
+  .form-control {
+    background-image: none;
+    box-shadow: none;
+    border: 0.2em solid #000;
+  }
+  .form-control.is-invalid {
+    background-image: none;
+    box-shadow: none;
+    border: 0.2em solid #dc3545;
+    color: #dc3545;
+  }
+  .form-control:focus{
+    background: #ddd;
+  }
+  .form-check-input {
+    border: 0.2em solid #000;
+  }
+  .form-check-input:focus {
+    box-shadow: none;
+    outline: none;
+  }
+  .form-check-input:focus {
+    box-shadow: none;
+  }
+  .form-check-input:checked {
+    background-color: #000;
+    color: #000;
+  }
+}
+}
+
 </style>

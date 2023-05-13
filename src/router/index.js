@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { auth, db } from '../firebase/firebase'
 import { doc, getDoc } from "firebase/firestore"
+import store from '../store/index'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +10,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/HomeView.vue'),
-      meta:{
+      meta: {
         title: 'Marvel Comics'
       }
     },
@@ -17,18 +18,18 @@ const router = createRouter({
       path: '/personajes',
       name: 'personajes',
       component: () => import('../views/PersonajesView.vue'),
-      meta:{
+      meta: {
         title: 'Personajes | Marvel Comics',
         registrado: true,
         // premium: true,
       }
     },
     {
-      path: '/personaje',
-      name: 'personaje',
-      component: () => import('../views/PersonajeView.vue'),
-      meta:{
-        title: 'Personaje | Marvel Comics',
+      path: '/premium',
+      name: 'premium',
+      component: () => import('../views/PremiumView.vue'),
+      meta: {
+        title: 'Premium | Marvel Comics',
         registrado: true,
         premium: true,
       }
@@ -37,23 +38,23 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue'),
-      meta:{
-        title: 'Login | Marvel Comics'
+      meta: {
+        title: 'Login | Marvel Comics',
       }
     },
     {
       path: '/register',
       name: 'register',
       component: () => import('../views/RegisterView.vue'),
-      meta:{
-        title: 'Register | Marvel Comics'
+      meta: {
+        title: 'Register | Marvel Comics',
       }
     },
     {
       path: '/perfil',
       name: 'perfil',
       component: () => import('../views/PerfilView.vue'),
-      meta:{
+      meta: {
         title: 'Perfil | Marvel Comics',
         registrado: true,
       }
@@ -61,33 +62,38 @@ const router = createRouter({
   ]
 })
 
-//proteccion rutas registro
-router.beforeEach(async(to, from, next) => { 
-  //itera las rutas y devuelve true si la ruta tiene meta.registrado
-  if(to.matched.some(record => record.meta.registrado)){
-    if(auth.currentUser){
-      //itera las rutas y devuelve true si la ruta tiene meta.premium 
-      if(to.matched.some(record => record.meta.premium)){
-        const data = await getDoc(doc(db, 'usuarios', auth.currentUser.uid));//datos firestore
-        const tipo = data.data().tipo;//tipo Premium/Normal 
-        if(tipo == 'Premium'){
-          console.log('premium')
+//proteccion rutas global
+router.beforeEach(async (to, from, next) => {
+
+  //si tienen el meta registrado
+  if (to.matched.some(record => record.meta.registrado)) {//si la ruta tiene meta.registrado true
+    
+    //si hay sesion abierta
+    if (auth.currentUser) {
+
+      //si tambien tiene el meta premium
+      if (to.matched.some(record => record.meta.premium)) {//si la ruta tiene meta.premium true
+        const data = await getDoc(doc(db, 'usuarios', auth.currentUser.uid));
+        const tipo = data.data().tipo;
+
+        //si el tipo de sesion es Premium 
+        if (tipo == 'Premium') {
           next()
-        }else{
-          console.log('no premium')
-          next('/')
+        //si no es Premium
+        } else {
+          next('/')//sino tiene premium se le podria mostrar un mensaje
         }
+      //si hay sesion abierta y no necesita premium
       }else{
-        console.log('registrado')
-        next()
+          next()
       }
-      // next();
+    //si no hay sesion abierta y pide meta registrado
     } else {
-      console.log('no registrado')
+      store.commit('usuarios/setRedireccionar', to.path)//guardar ruta original
       next('/login');
     }
-
-  }else {
+  //si no tiene requisitos
+  } else {
     next();
   }
   // poner titulo a cada componente

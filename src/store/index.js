@@ -18,13 +18,16 @@ export default createStore({
         buscados: [],
         buscar: '',
         coincidencias: 0,
+        msgBusqueda: '',
         //comics
         comics: [],
         comicActual: '',
         offsetComics: 0,
-        totalComics: '',
+        totalComics: 1,
         //infoComics
         infoComics: [],
+        sinComics: false,
+        altura: 'auto',
     },
     mutations: {
         addPersonajes(state, resp) {
@@ -33,8 +36,6 @@ export default createStore({
         },
         addPersonajeActual(state, resp) {
             state.personajeActual = resp;
-            // console.log(state.personajeActual,'person actual')
-            //de aqui se puede sacar el total de comics, la url de los comics y le de la info comics
         },
         addOffset(state, resp = true) {
             resp ? state.offset += 20: state.offset -= 20;
@@ -45,14 +46,12 @@ export default createStore({
         addBuscados(state, resp) {
             state.buscados = [...resp.data.results];
             state.coincidencias = resp.data.total;
-            // console.log(state.coincidencias, 'total busqueda')
+            this.commit('setMsgBusqueda', state.coincidencias)
         },
         addComics(state, resp) {
-            //si el objeto variantDescription = true tiene una portada escpecial y no se muestra(posiblemente en premium)
-            state.comics = [...state.comics, ...resp.data.results]//.filter(item => !item.variantDescription)];//deja de mostrar los premium...
-            state.totalComics = resp.data.total;
-            // console.log(resp.data)
-            // console.log(resp.data.total)//aqui tambien se saca el total de comics y el offset de comics
+            state.comics = [...state.comics, ...resp.data.results]
+            state.totalComics = resp.data.total < 1 ? 1: resp.data.total;
+            state.sinComics = resp.data.total < 1 ? true: false;//si no hay comics
         },
         addOffsetComics(state) {
             state.offsetComics += 20;
@@ -62,14 +61,21 @@ export default createStore({
         },
         addInfoComic(state, resp) {
             state.infoComics = resp.data.results;
-            // console.log(state.infoComics);
         },
         setMostrarPersonaje(state, resp) {
             state.mostrarPersonaje = resp;
         },
-        setOrden(state, resp) {
+        setOrdenar(state, resp) {
             state.ordenInverso = resp;
             this.commit('resetPersonajes');
+        },
+        setAltura(state, resp) {
+            state.altura = resp;
+        },
+        setMsgBusqueda(state, resp){
+            if (resp <= 0) state.msgBusqueda = `No hay coincidencias`;
+            else if (resp > state.buscados.length) state.msgBusqueda = `Se mas preciso`;
+            else if (resp <= state.buscados.length) state.msgBusqueda = `Esto es todo lo que se encontro`;
         },
         resetPersonajes(state) {
             state.personajes = [];
@@ -110,6 +116,7 @@ export default createStore({
             const data = await fetch(url);
             const resp = await data.json();
             commit(mutacion, resp);
+            this.commit('setAltura', 'auto');
         },
     },
     getters: {
@@ -135,13 +142,13 @@ export default createStore({
         infoComiclink(state) {
             return state.personajeActual.urls.filter(item => item.type == 'comiclink');
         },
-        infoBuscar(state) {
-            if (state.coincidencias <= 0) return `No hay coincidencias`;
-            if (state.coincidencias > state.buscados.length) return `Se mas preciso`;
-            if (state.coincidencias <= state.buscados.length) return `Esto es todo lo que se encontro`;
-        },
         marcado(state) {
             return state.ordenInverso;
+        },
+        ImagenPersonaje(state){
+            const imagen = state.personajeActual.thumbnail.path;
+            if(imagen.includes('image_not_available') || imagen.includes('f/60/4c002e0305708')) return '/img/error.gif';
+            else return `${imagen}.${state.personajeActual.thumbnail.extension}`;
         }
     },
     modules: {

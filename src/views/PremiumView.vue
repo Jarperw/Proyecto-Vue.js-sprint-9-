@@ -1,10 +1,10 @@
 <template>
-  personaje 
+  <h1>Premium</h1>
 </template>
 
 <script>
 export default {
-    name:'personaje'
+    name:'Premium',
 }
 </script>
 
