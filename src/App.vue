@@ -20,6 +20,9 @@ export default {
 *{
   font-family: 'Bangers', cursive;
 }
+body{
+  background: #000 !important;
+}
 </style>
 
 

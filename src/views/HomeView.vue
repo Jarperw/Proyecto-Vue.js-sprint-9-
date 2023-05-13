@@ -16,7 +16,7 @@
       </svg>
     </div>
     <div>
-      <h2 class="bg-black text-center text-secondary pb-4 pt-1 m-0">Todos los clasicos</h2>
+      <h2 class="bg-black text-center text-secondary pb-4 pt-1 m-0">Todos los clásicos</h2>
     </div>
     <div class="position-relative">
       <img class="cover" src="/img/5.jpg" alt="imgPortada">
@@ -25,7 +25,7 @@
       </svg>
     </div>
     <div>
-      <h2 class="bg-black text-center text-secondary pb-4 pt-1 m-0">Proximamente Marvel Peliculas</h2>
+      <h2 class="bg-black text-center text-secondary pb-4 pt-1 m-0">Próximamente Marvel Peliculas</h2>
     </div>
     <div class="position-relative">
       <img class="cover" src="/img/10.jpg" alt="imgPortada">
@@ -37,7 +37,7 @@
       </svg>
     </div>
     <div>
-      <h2 class="bg-black text-center text-secondary pb-4 pt-1 m-0">En colaboracion con Marvel Studios</h2>
+      <h2 class="bg-black text-center text-secondary pb-4 pt-1 m-0">En colaboración con Marvel Studios</h2>
     </div>
     <img class="cover2" src="/img/29.jpg" alt="imgPortada">
   </div>

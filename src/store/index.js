@@ -88,6 +88,7 @@ export default createStore({
         resetComics(state) {
             state.comics = [];
             state.offsetComics = 0;
+            state.sinComics = false;
         },
     },
     actions: {

@@ -17,10 +17,10 @@
               <p>{{item.characters.items.map(item => item.name.replace('(HAS)', '')).join(", ")}}</p>
               <h5>Creadores</h5>
               <p>{{item.creators.items.map(item => {return `${item.role}: ${item.name}`}).join(", ")}}</p>
-              <h5>Descripcion</h5>
+              <h5>Descripción</h5>
               <p>{{item.description}}</p>
-              <h5>Numero de paginas</h5>
-              <p>{{item.pageCount}} Paginas</p>
+              <h5>Número de páginas</h5>
+              <p>{{item.pageCount}} Páginas</p>
               <h5>Precios</h5>
               <div v-for="(precio, index) in item.prices" :key="index">
                 <p>En la tienda {{precio.type}}: {{precio.price}}$</p>
@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="modal-footer border-black">
-          <button ref="modal" type="button" class="btn btn-danger text-black" data-bs-dismiss="modal">Close</button>
+          <button ref="modal" type="button" class="btn btn-danger text-black" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -43,11 +43,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <h5>Lo siento, este contenido solo es para usuarios Premium.</h5>
+          <h5>Lo siento, este contenido sólo es para usuarios Premium.</h5>
         </div>
         <div class="modal-footer border-black">
-          <button ref="modal" type="button" class="btn btn-danger text-black" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary text-black" @click="irPerfil()">Hazte Premium</button>
+          <button ref="modal" type="button" class="btn btn-danger text-black" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary text-black" @click="irPerfil()">Házte Premium</button>
         </div>
       </div>
     </div>

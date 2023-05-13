@@ -1,6 +1,6 @@
 <template>
   <div class="imagen mx-auto">
-    <img class="img-fluid cover" src="/img/img1.jpg" alt="" />
+    <img class="img-fluid cover" src="/img/21.jpg" alt="" />
   </div>
   <div class="container-fluid pb-5" :style="{ height: altura }" ref="altura">
     <!-- BUSCAR -->
@@ -21,7 +21,7 @@
       v-if="!buscar && personajes.length && !mostrarPersonaje" 
       class="ordenar m-3 p-3 d-flex justify-content-between border border-black border-3 rounded-5 bg-white"
     >
-      <h3 class="me-3 mb-0 fw-bold text-black">Ordenar |</h3>
+      <h3 class="me-3 mb-0 fw-bold text-black">Ordenar</h3>
       <div>
         <img :class="!marcado ? boton: 'btn'" src="/icons/arrow-down-a-z-solid.svg" @click="orden(false)"/>
         <img :class="marcado ? boton: 'btn'" src="/icons/arrow-down-z-a-solid.svg" @click="orden(true)"/>
@@ -31,7 +31,7 @@
     <div v-if="!mostrarPersonaje" class="personajes mt-4">
       <div class="d-flex flex-wrap gap-3 justify-content-center">
         <div
-          class="card border-3 bg-dark text-danger"
+          class="card border-3 bg-dark text-white"
           v-for="item in buscar ? buscados : personajes"
           :key="item.id"
           @click="verPersonaje(item)"
@@ -152,12 +152,28 @@ export default {
 
 <style lang="scss" scoped>
 .imagen {
-  max-width: 1600px;
-  // .cover{
-  //   width: 100%;
-  //   height: 500px;
-  //   object-fit: cover;
-  // }
+  // max-width: 1600px;
+  .cover{
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+
+    @media (min-width: 480px) {
+      height: 225px;
+    }
+    @media (min-width: 576px) {
+      height: 260px;
+    }
+    @media (min-width: 768px) {
+      height: 280px;
+    }
+    @media (min-width: 992px) {
+      height: 350px;
+    }
+    @media (min-width: 1300px) {
+      height: 600px;
+    }
+  }
 }
 .container-fluid {
   max-width: 1600px;
@@ -185,9 +201,6 @@ export default {
 
   .personajes {
     .card {
-      // border: 0.35em solid #000;
-      // background: #fff !important;
-      // color: #fff !important;
       cursor: pointer;
       width: 10em;
       transition: all 0.4s;
@@ -203,8 +216,7 @@ export default {
     .card:hover {
       transform: translateY(-0.5em);
       h5 {
-        color: #fff;
-        // color: red;
+        color: #dc3545;
       }
     }
   }

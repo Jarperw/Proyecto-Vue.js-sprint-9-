@@ -6,7 +6,7 @@
       @submit.prevent="login" 
       novalidate
     >
-      <h1>Login</h1>
+      <h1>Entrar</h1>
       <div class="mb-3">
         <input 
           v-model.trim="usuario.email" 
@@ -16,7 +16,7 @@
           placeholder="Email"
           ref="email" 
         >
-        <div v-if="!msgMail" class="invalid-feedback">Por favor, introduce un email valido.</div>
+        <div v-if="!msgMail" class="invalid-feedback">Por favor, introduce un email válido.</div>
         <div v-else class="invalid-feedback">{{ msgMail }}</div>
       </div>
       <div class="mb-3">
@@ -28,15 +28,15 @@
           placeholder="Contraseña"
           ref="password" 
         >
-        <div v-if="!msgPassword" class="invalid-feedback">Introduce un pasword valido, minimo 6 caracteres.</div>
+        <div v-if="!msgPassword" class="invalid-feedback">Introduce una contraseña válida, mínimo 6 caracteres.</div>
         <div v-else class="invalid-feedback">{{ msgPassword }}</div>
         <Forgot/>
       </div>
       <Ver-password :valor="verPassword" @valor="verPassword = $event"/>
       <div class="d-grid gap-2">
-        <button class="btn btn-danger">Login</button>    
+        <button class="btn btn-danger">Entrar</button>    
       </div>
-      <Router-link class="registro text-dark" to="/register">Registrate</Router-link>
+      <Router-link class="registro text-dark" to="/register">Regístrate</Router-link>
     </form> 
   </div>
 </template>
@@ -91,7 +91,7 @@ export default {
 
 <style lang="scss" scoped>
 .container-fluid {
-  max-width: 1600px;
+  // max-width: 1600px;
   .cover {
     top: 0;
     width: 100%;
@@ -101,6 +101,10 @@ export default {
   }
   .row {
     max-width: 32.5em;
+    input{
+      font-style: italic;
+      font-family: 'Ranchers', cursive;
+    }
     .form-control {
       background-image: none;
       box-shadow: none;

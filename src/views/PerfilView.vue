@@ -8,7 +8,7 @@
         <div class="col-md-6">
           <label for="nickname" class="form-label">Usuario</label>
           <input v-model.trim="cambio.nickname" @input="resetError('nickname')" type="text" :class="['form-control', error.nickname]" ref="nickname" id="nickname" :disabled="!editar"/>
-          <div class="invalid-feedback">Por favor, introduce tu Usuario, minimo 3 carcateres.</div>
+          <div class="invalid-feedback">Por favor, introduce tu usuario, mínimo 3 caracteres.</div>
         </div>
         <div class="col-md-6">
           <label for="suscripcion" class="form-label">Tipo usuario</label>
@@ -30,19 +30,19 @@
         <div class="col-md-6">
           <label for="email" class="form-label">Email</label>
           <input v-model.trim="cambio.email" @input="resetError('email')" type="email" :class="['form-control', error.email]" ref="email" id="email" :disabled="!editar"/>
-          <div v-if="!msgMail" class="invalid-feedback">Por favor, introduce un email valido.</div>
+          <div v-if="!msgMail" class="invalid-feedback">Por favor, introduce un email válido.</div>
           <div v-else class="invalid-feedback">{{ msgMail }}</div>
         </div>
         <div v-if="editar" class="col-md-6">
-          <label for="passwordActual" class="form-label">Actual Password</label>
+          <label for="passwordActual" class="form-label">Actual Contraseña</label>
           <input v-model.trim="cambio.passwordActual" @input="resetError('passwordActual')" :type="verPassword ? 'text': 'password'" :class="['form-control', error.passwordActual]" ref="passwordActual" id="passwordActual"/>
-          <div v-if="!msgPassword" class="invalid-feedback">Por favor, introduce tu pasword actual.</div>
+          <div v-if="!msgPassword" class="invalid-feedback">Por favor, introduce tu contraseña actual.</div>
           <div v-else class="invalid-feedback">{{ msgPassword }}</div>
         </div>
         <div v-if="editar" class="col-md-6">
-          <label for="password" class="form-label">Nuevo Password</label>
+          <label for="password" class="form-label">Nueva contraseña</label>
           <input v-model.trim="cambio.nuevoPassword" @input="resetError('nuevoPassword')" :type="verPassword ? 'text': 'password'" :class="['form-control', error.nuevoPassword]" ref="nuevoPassword" id="password"/>
-          <div class="invalid-feedback">Por favor, introduce un pasword valido, minimo 6 caracteres.</div>
+          <div class="invalid-feedback">Por favor, introduce una contraseña válida, mínimo 6 caracteres.</div>
         </div>
         <Forgot v-if="editar"/>
         <Ver-password v-if="editar" :valor="verPassword" @valor="verPassword = $event"/>
@@ -50,7 +50,7 @@
           <button class="btn btn-danger">Guardar cambios</button>
         </div>
       </form>
-      <button v-if="!editar" class="btn btn-danger mt-5 ms-4 mb-2" @click="cerrar">Cerrar sesion</button>
+      <button v-if="!editar" class="btn btn-danger mt-5 ms-4 mb-2" @click="cerrar">Cerrar sesión</button>
     </div>
   </div>
 </template>
@@ -123,7 +123,7 @@ export default {
 
 <style lang="scss" scoped>
 .perfil{
-  max-width: 1600px;
+  // max-width: 1600px;
   .fondo{
     top: 0;
     width: 100%;
@@ -146,10 +146,10 @@ export default {
       width: 3em;
       cursor: pointer;
     }
-    // input{
-    //   font-style: italic;
-    //   font-family: 'Ranchers', cursive;
-    // }
+    input{
+      font-style: italic;
+      font-family: 'Ranchers', cursive;
+    }
     //cuando input disabled disabled
     input:disabled,
     select:disabled{

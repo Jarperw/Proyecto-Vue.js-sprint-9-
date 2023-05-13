@@ -9,13 +9,13 @@
       </button>
       <div ref="canvas" class="offcanvas offcanvas-start text-bg-white" :class="bordes + redondo" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
         <div class="offcanvas-header border-bottom">
-          <h5 class="offcanvas-title" id="offcanvasNavbar2Label">MARVEL COMIC</h5>
+          <h5 class="offcanvas-title" id="offcanvasNavbar2Label">MARVEL CÓMIC</h5>
           <button ref="cerrar" type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body flex-column fs-5">
           <h3 v-if="show && nombreUsuario" class="text-danger">Usuario</h3>
           <div class="navbar-nav align-self-end pb-3" :class="show ? 'border-bottom': ''">
-            <RouterLink v-if="!nombreUsuario" class="nav-link" to="/login" @click="cerrar()">LOGIN</RouterLink>
+            <RouterLink v-if="!nombreUsuario" class="nav-link" to="/login" @click="cerrar()">ENTRAR</RouterLink>
             <RouterLink v-if="!nombreUsuario" class="nav-link" to="/register" @click="cerrar()">REGISTRO</RouterLink>
             <RouterLink v-else class="perfil nav-link" to="/perfil" @click="cerrar()">
               <img src="/img/escudo2.gif" alt="">

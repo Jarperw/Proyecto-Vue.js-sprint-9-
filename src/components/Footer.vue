@@ -33,7 +33,7 @@
       </div>
     </div>
     <div>
-      <h5 class="giro text-danger d-inline-block">Con la colaboracion de Albert Studios</h5>
+      <h5 class="giro text-danger d-inline-block">Con la colaboración de Albert Studios</h5>
     </div>
     <div class="copyright text-center py-3 pt-md-4 pb-md-0">
       <p class="mb-md-2">Datos proporcionados por Marvel. © 2014 Marvel</p>
@@ -44,7 +44,7 @@
         <li class="nav-link"><a href="#">Política de privacidad</a></li>
         <li class="nav-link"><a href="#">Sus derechos de privacidad del estado de EE. UU.</a></li>
         <li class="nav-link mb-0"><a href="#">No vender mi información</a></li>
-        <li class="nav-link"><a href="#">Politica de privacidad en lina para niños</a></li>
+        <li class="nav-link"><a href="#">Política de privacidad en línea para niños</a></li>
         <li class="nav-link"><a href="#">Acuerdo de licencia</a></li>
         <li class="nav-link"><a href="#">Anuncios basados ​​en intereses</a></li>
         <li class="nav-link"><a href="#">Términos de Marvel Insider</a></li>

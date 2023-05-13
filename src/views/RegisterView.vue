@@ -6,7 +6,7 @@
     <div class="col-md-6">
       <label for="nickname" class="form-label">Usuario</label>
       <input v-model.trim="usuario.nickname" @input="resetError('nickname')" type="text" :class="['form-control', error.nickname]" ref="nickname" id="nickname" placeholder="Usuario">
-      <div class="invalid-feedback">Por favor, introduce tu Usuario, minimo 3 carcateres.</div>
+      <div class="invalid-feedback">Por favor, introduce tu Usuario, mínimo 3 caracteres.</div>
     </div>
     <div class="col-md-6">
       <label for="suscripcion" class="form-label">Tipo usuario</label>
@@ -28,19 +28,19 @@
     <div class="col-md-6">
       <label for="email" class="form-label">Email</label>
       <input v-model.trim="usuario.email" @input="resetError('email')" type="email" :class="['form-control', error.email]" ref="email" id="email" placeholder="email">
-      <div v-if="!msgMail" class="invalid-feedback">Por favor, introduce un email valido.</div>
+      <div v-if="!msgMail" class="invalid-feedback">Por favor, introduce un email válido.</div>
       <div v-else class="invalid-feedback">{{ msgMail }}</div>
     </div>
     <div class="col-md-6">
       <label for="password" class="form-label">Contraseña</label>
       <input v-model.trim="usuario.password" @input="resetError('password')" :type="verPassword ? 'text': 'password'" :class="['form-control', error.password]" ref="password" id="password" placeholder="Contraseña">
-      <div class="invalid-feedback">Por favor, introduce un pasword valido, minimo 6 caracteres.</div>
+      <div class="invalid-feedback">Por favor, introduce una contraseña válida, mínimo 6 caracteres.</div>
     </div>
     <Ver-password :valor="verPassword" @valor="verPassword = $event"/>
     <div class="col-12">
       <div class="form-check">
         <input v-model="usuario.condiciones" @input="resetError('condiciones')" type="checkbox" :class="['form-check-input', error.condiciones]" ref="condiciones" id="terms">
-        <label class="form-check-label" for="terms">Acepto los términos y condiciones.</label>
+        <label class="form-check-label" for="terms">Acepto los términos y condiciones</label>
       </div>
     </div>
     <div class="col-12 mb-2">
@@ -84,7 +84,6 @@ export default {
         this.registroFire(this.usuario);
     },
     validar() {
-        // this.resetError();
         //enviar validacion a vuex
         this.addValidacion(this.usuario);
 
@@ -108,7 +107,7 @@ export default {
 
 <style lang="scss" scoped>
 .container-fluid{
-  max-width: 1600px;
+  // max-width: 1600px;
   .cover {
   top: 0;
   width: 100%;
@@ -124,6 +123,10 @@ export default {
 }
 .row {
   max-width: 70em;
+  input{
+    font-style: italic;
+    font-family: 'Ranchers', cursive;
+  }
   .form-select {
     box-shadow: none;
     border: 0.2em solid #000;

@@ -17,7 +17,7 @@
           </form>
         </div>
         <div class="modal-footer border-dark">
-          <button @click="resetPassword" type="button" class="btn btn-primary">Reset password</button>
+          <button @click="resetPassword" type="button" class="btn btn-danger">Cambiar contraseña</button>
         </div>
       </div>
     </div>
@@ -51,6 +51,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+input{
+  font-style: italic;
+  font-family: 'Ranchers', cursive;
+}
 .float-end{
   transition: all 0.7s; 
 }

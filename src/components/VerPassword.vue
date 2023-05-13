@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="form-check">
       <input v-model.trim="verPassword" type="checkbox" class="form-check-input" id="pass"/>
-      <label class="form-check-label" for="pass">Mostrar contraseña.</label>
+      <label class="form-check-label" for="pass">Mostrar contraseña</label>
     </div>
   </div>
 </template>

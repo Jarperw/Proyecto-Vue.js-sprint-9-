@@ -18,9 +18,9 @@
           <p class="card-text">
             <small>Modificado: {{ fecha(personajeActual.modified) }}</small>
           </p>
-          <a class="text-decoration-none" :href="infoComiclink[0].url" target="_blank">Web info comics</a>
+          <a class="text-decoration-none" :href="infoComiclink[0].url" target="_blank">Web info cómics</a>
           <div class="botones mt-4">
-            <button class="btn btn-danger text-white me-2" @click="mostrarComics()">ver comics</button>
+            <button class="btn btn-danger text-white me-2" @click="mostrarComics()">ver cómics</button>
             <button :class="['btn', 'btn-danger', 'text-white', comics.length ? boton: '']" @click="volver()">volver</button>
           </div>
         </div>
@@ -28,10 +28,10 @@
     </div>
   </div>
   <!-- COMICS -->
-  <h1 v-if="comics.length" class="ms-3 text-black">Marvel Comics</h1>
-  <h1 v-if="sinComics" class="ms-3 text-black position-absolute">No hay comics</h1>
+  <h1 v-if="comics.length" class="ms-3 text-black">Marvel Cómics</h1>
+  <h1 v-if="sinComics" class="ms-3 text-black position-absolute">No hay cómics</h1>
   <div class="comic d-flex flex-wrap justify-content-center gap-3 mt-4">
-    <div class="card border-3 bg-dark text-danger" v-for="item in comics" :key="item.id">
+    <div class="card border-3 bg-dark text-white" v-for="item in comics" :key="item.id">
       <img
           data-bs-toggle="modal" data-bs-target="#exampleModal"
           :src="`${item.thumbnail.path}/portrait_incredible.${item.thumbnail.extension}`"
@@ -142,7 +142,7 @@ export default {
   .card:hover {
     transform: translateY(-0.5em);
     h5{
-      color: #fff;
+      color: #dc3545;
     }
   }
   img{
